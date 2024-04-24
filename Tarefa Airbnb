@@ -1,0 +1,205 @@
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.Scanner;
+
+class Acomodacao {
+    private int roomId;
+    private int hostId;
+    private String roomType;
+    private String country;
+    private String city;
+    private String neighbourhood;
+    private int reviews;
+    private double overallSatisfaction;
+    private int accommodates;
+    private double bedrooms;
+    private double price;
+    private String propertyType;
+
+    public Acomodacao(int roomId, int hostId, String roomType, String country, String city, String neighbourhood,
+                      int reviews, double overallSatisfaction, int accommodates, double bedrooms, double price,
+                      String propertyType) {
+        this.roomId = roomId;
+        this.hostId = hostId;
+        this.roomType = roomType;
+        this.country = country;
+        this.city = city;
+        this.neighbourhood = neighbourhood;
+        this.reviews = reviews;
+        this.overallSatisfaction = overallSatisfaction;
+        this.accommodates = accommodates;
+        this.bedrooms = bedrooms;
+        this.price = price;
+        this.propertyType = propertyType;
+    }
+
+    // Getters
+    public int getRoomId() {
+        return roomId;
+    }
+
+    public int getHostId() {
+        return hostId;
+    }
+
+    public String getRoomType() {
+        return roomType;
+    }
+
+    public String getCountry() {
+        return country;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public String getNeighbourhood() {
+        return neighbourhood;
+    }
+
+    public int getReviews() {
+        return reviews;
+    }
+
+    public double getOverallSatisfaction() {
+        return overallSatisfaction;
+    }
+
+    public int getAccommodates() {
+        return accommodates;
+    }
+
+    public double getBedrooms() {
+        return bedrooms;
+    }
+
+    public double getPrice() {
+        return price;
+    }
+
+    public String getPropertyType() {
+        return propertyType;
+    }
+
+    // Setters
+    public void setRoomId(int roomId) {
+        this.roomId = roomId;
+    }
+
+    public void setHostId(int hostId) {
+        this.hostId = hostId;
+    }
+
+    public void setRoomType(String roomType) {
+        this.roomType = roomType;
+    }
+
+    public void setCountry(String country) {
+        this.country = country;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    public void setNeighbourhood(String neighbourhood) {
+        this.neighbourhood = neighbourhood;
+    }
+
+    public void setReviews(int reviews) {
+        this.reviews = reviews;
+    }
+
+    public void setOverallSatisfaction(double overallSatisfaction) {
+        this.overallSatisfaction = overallSatisfaction;
+    }
+
+    public void setAccommodates(int accommodates) {
+        this.accommodates = accommodates;
+    }
+
+    public void setBedrooms(double bedrooms) {
+        this.bedrooms = bedrooms;
+    }
+
+    public void setPrice(double price) {
+        this.price = price;
+    }
+
+    public void setPropertyType(String propertyType) {
+        this.propertyType = propertyType;
+    }
+
+    // Método clone
+    public Acomodacao clone() {
+        return new Acomodacao(roomId, hostId, roomType, country, city, neighbourhood, reviews, overallSatisfaction,
+                accommodates, bedrooms, price, propertyType);
+    }
+
+    // Método ler
+    public static Acomodacao ler(String linha) {
+        String[] dados = linha.split("\t");
+        int roomId = Integer.parseInt(dados[0]);
+        int hostId = Integer.parseInt(dados[1]);
+        String roomType = dados[2];
+        String country = dados[3];
+        String city = dados[4];
+        String neighbourhood = dados[5];
+        int reviews = Integer.parseInt(dados[6]);
+        double overallSatisfaction = Double.parseDouble(dados[7]);
+        int accommodates = Integer.parseInt(dados[8]);
+        double bedrooms = Double.parseDouble(dados[9]);
+        double price = Double.parseDouble(dados[10]);
+        String propertyType = dados[11];
+        return new Acomodacao(roomId, hostId, roomType, country, city, neighbourhood, reviews, overallSatisfaction,
+                accommodates, bedrooms, price, propertyType);
+    }
+
+    // Método imprimir
+    public void imprimir() {
+        System.out.println("[" + roomId + " ## " + hostId + " ## " + roomType + " ## " + country + " ## " + city + " ## " +
+                neighbourhood + " ## " + reviews + " ## " + overallSatisfaction + " ## " + accommodates + " ## " +
+                bedrooms + " ## " + price + " ## " + propertyType + "]");
+    }
+}
+
+public class airbnb {
+    public static void main(String[] args) {
+        try {
+            BufferedReader reader = new BufferedReader(new FileReader("/tmp/dados_airbnb.txt"));
+            reader.readLine(); // Descarta a primeira linha
+            int totalAcomodacoes = 0;
+            while (reader.readLine() != null) {
+                totalAcomodacoes++;
+            }
+            reader.close();
+
+            Acomodacao[] acomodacoes = new Acomodacao[totalAcomodacoes];
+            reader = new BufferedReader(new FileReader("/tmp/dados_airbnb.txt"));
+            reader.readLine(); // Descarta a primeira linha
+            int i = 0;
+            String linha;
+            while ((linha = reader.readLine()) != null) {
+                acomodacoes[i++] = Acomodacao.ler(linha);
+            }
+            reader.close();
+
+            Scanner scanner = new Scanner(System.in);
+            String id;
+            while (!(id = scanner.nextLine()).equals("FIM")) {
+                int idAcomodacao = Integer.parseInt(id);
+                for (Acomodacao acomodacao : acomodacoes) {
+                    if (acomodacao != null && acomodacao.getRoomId() == idAcomodacao) {
+                        acomodacao.imprimir();
+                        break;
+                    }
+                }
+            }
+            scanner.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+}
